@@ -47,7 +47,8 @@ module.exports = {
       }
     },
     // 启用 CSS modules for all css / pre-processor files.
-    modules: false
+    modules: false,
+    // requireModuleExtension: false
   },
 
   // 是一个函数，会接收一个基于 webpack-chain 的 ChainableConfig 实例。允许对内部的 webpack 配置进行更细粒度的修改。

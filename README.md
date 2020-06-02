@@ -1,4 +1,4 @@
-# vue-cli4-vant
+# store
 
 ## 简介
 
@@ -124,9 +124,8 @@ let http = axios.create({
 http.interceptors.request.use(
   (config) => {
     // 设置token，Content-Type
-    var token = sessionStorage.getItem('token')
-    config.headers['token'] = token
-    config.headers['Content-Type'] = 'application/json;charset=UTF-8'
+    // 统一设置headers 引入保存至store的headers
+    config.headers = store.getters.headers
     // 请求显示loading效果
     if (config.loading === true) {
       vm.$loading.show()
@@ -142,10 +141,20 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   (res) => {
     vm.$loading.hide()
+    if (!error.response) {
+      // 断网
+      vm.$toast({
+        msg: '网络错误',
+        type: 'fail'
+      })
+    }
     // token失效，重新登录
     if (res.data.code === 401) {
       //  重新登录
     }
+
+    // 统一跳转至err
+    // router.push({name: 'err', query: {code: error.response.status}})
     return res
   },
   (error) => {
@@ -153,56 +162,44 @@ http.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+export default http
+
 ```
 
-2、封装 get 和 post 请求方法
+2、封装 api
 
 ```js
-function get(url, data, lodaing) {
-  return new Promise((resolve, reject) => {
-    http
-      .get(url)
-      .then(
-        (response) => {
-          resolve(response)
-        },
-        (err) => {
-          reject(err)
-        }
-      )
-      .catch((error) => {
-        reject(error)
-      })
-  })
+import base from './base.js';
+import http from '@/util/http.js'
+
+function xx1(params) {
+  return http.post(base.activity_api + 'shop/xxx', params)
 }
 
-function post(url, data, loading) {
-  return new Promise((resolve, reject) => {
-    http
-      .post(url, data, { loading: loading })
-      .then(
-        (response) => {
-          resolve(response)
-        },
-        (err) => {
-          reject(err)
-        }
-      )
-      .catch((error) => {
-        reject(error)
-      })
-  })
+function xx2(params) {
+  return http.get(base.activity_api + `shop/xxx/${id}`, params)
 }
 
-export { get, post }
+export default {
+  xx1,
+  xx2
+}
+
 ```
 
-3、把 get，post 方法挂载到 vue 实例上。
+3、使用
 
 ```js
-// main.js
-import { get, post } from './js/ajax'
-Vue.prototype.$http = { get, post }
+
+import xx from '@/api/xx.js';
+xx.xx1(
+  {
+    page: 0,
+    size: 10
+  }).then(({data}) => {
+  console.log(data)
+})
 ```
 
 ## 工具类函数封装

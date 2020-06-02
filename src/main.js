@@ -9,11 +9,10 @@ import Dialog from './components/dialog'
 import Loading from './components/loading'
 import toast from './components/toast'
 
-import './JS/plugin'
-import './JS/FastClick'
-import utils from './JS/utils'
+import './utils/plugin'
+import './utils/FastClick'
+import utils from './utils/utils'
 import VueScroller from 'vue-scroller'
-import { get, post } from './JS/ajax'
 
 Vue.use(VueScroller)
 Vue.use(utils)
@@ -21,7 +20,6 @@ Vue.use(utils)
 Vue.prototype.$dialog = Dialog
 Vue.prototype.$loading = Loading
 Vue.prototype.$toast = toast
-Vue.prototype.$http = { get, post }
 
 Vue.config.productionTip = false
 

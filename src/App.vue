@@ -15,7 +15,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   width: 100% !important;

@@ -2,6 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 
+import "@babel/polyfill";
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+
 import './assets/css/reset.css'
 import './assets/css/common.css'
 
@@ -14,8 +18,16 @@ import './utils/FastClick'
 import utils from './utils/utils'
 import VueScroller from 'vue-scroller'
 
-Vue.use(VueScroller)
+import {
+  Grid,
+  GridItem,
+  Image as VanImage
+} from 'vant'
+
 Vue.use(utils)
+Vue.use(Grid)
+Vue.use(GridItem)
+Vue.use(VueScroller)
 
 Vue.prototype.$dialog = Dialog
 Vue.prototype.$loading = Loading
